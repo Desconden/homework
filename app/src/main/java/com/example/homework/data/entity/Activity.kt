@@ -8,7 +8,7 @@ import java.util.*
                 Index("activity_id", unique = true)
         ])
 data class Activity(
-        @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "activity_id") var activityId: Long,
+        @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "activity_id") var activityId: Long = 0,
         @ColumnInfo(name = "activity_Title") var activityTitle: String,
         @ColumnInfo(name = "activity_Category") var activityCategory: String,
         @ColumnInfo(name = "activity_Date") var activityDate: Long,

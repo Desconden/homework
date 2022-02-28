@@ -74,6 +74,16 @@ fun Activity(
                         keyboardType = KeyboardType.Text
                     )
                 )
+                OutlinedTextField(
+                    value = time.value,
+                    onValueChange = { data -> time.value = data },
+                    label = { Text("Time") },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text
+                    )
+                )
                 Spacer(modifier = Modifier.height(10.dp))
                 OutlinedTextField(
                     value = description.value,
@@ -89,17 +99,6 @@ fun Activity(
                 //time picker
                 Spacer(modifier = Modifier.height(10.dp))
                 Row {
-                    OutlinedTextField(
-                    value = time.value,
-                    onValueChange = { data -> time.value = data },
-                    label = { Text("Time") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text
-                    )
-                    )
                     /*fun onCreate(savedInstanceState: Bundle?) {
                         onCreate(savedInstanceState)
                         OnClickTime()
@@ -114,11 +113,9 @@ fun Activity(
                                         activityDesc = description.value,
                                         activityCategory = type.value,
                                         activityDate = Date().time,
-                                        activityTime = time.value,
-                                        activityId = 1
+                                        activityTime = time.value
                                     )
                                 )
-                                //burayı mail at
                             }
                             onBackPress()
                         },
@@ -128,6 +125,8 @@ fun Activity(
                     ) {
                         Text("Add Activity")
                     }
+                }
+                Row {
                     Spacer(modifier = Modifier.height(10.dp))
                     Button(
                         onClick = {
@@ -138,8 +137,7 @@ fun Activity(
                                         activityDesc = description.value,
                                         activityCategory = type.value,
                                         activityDate = Date().time,
-                                        activityTime = time.value,
-                                        activityId = 2
+                                        activityTime = time.value
                                     )
                                 )
                             }
@@ -149,7 +147,7 @@ fun Activity(
                             .fillMaxWidth()
                             .size(55.dp)
                     ) {
-                        Text("Add Activity No Notification")
+                        Text("No Notification")
                     }
                 }
             }

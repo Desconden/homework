@@ -3,6 +3,7 @@ package com.example.homework.ui.activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat.from
@@ -100,21 +101,22 @@ private fun createActivityNotification(activity: Activity){
     val notificationId = 2
     val builder = NotificationCompat.Builder(Graph.appContext, "CHANNEL_ID")
         .setSmallIcon(com.example.homework.R.drawable.ic_launcher_background)
-        .setContentTitle("Activity Saved.")
+        .setContentTitle("Activity Addded.")
         .setContentText("${activity.activityTitle} of ${activity.activityCategory} on ${activity.activityDate.toDateString()}")
         .setPriority(NotificationCompat.PRIORITY_HIGH)
     with(from(Graph.appContext)){
         notify(notificationId, builder.build())
     }
 }
-//En kötü kanal değiştir olmaz ise
 private fun reminderActivityNotification(activity: Activity){
     val notificationId = 3
     val builder = NotificationCompat.Builder(Graph.appContext, "CHANNEL_ID")
         .setSmallIcon(com.example.homework.R.drawable.ic_launcher_background)
         .setContentTitle("Last activity.")
-        .setContentText("You saved ${activity.activityTitle} 30 seconds ago.")
+        .setContentText("You saved ${activity.activityTitle} just now make sure you don't forget.")
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setStyle(NotificationCompat.BigTextStyle()
+            .bigText(activity.activityDesc))
     with(from(Graph.appContext)){
         notify(notificationId, builder.build())
     }
