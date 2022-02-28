@@ -1,5 +1,9 @@
 package com.example.homework.ui.home.HomeActivity
 
+import android.content.Context
+import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.TimePicker
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -61,7 +65,7 @@ private fun ActivityListItem(
 ){
     ConstraintLayout(modifier = modifier
         .clickable { onClick() }) {
-        val(divider, activityTitle, activityCategory, activityDesc, icon, date) = createRefs()
+        val(divider, activityTitle, activityCategory, icon, date) = createRefs()
         Divider(
             Modifier.constrainAs(divider){
                 top.linkTo(parent.top)
@@ -103,26 +107,10 @@ private fun ActivityListItem(
                 width = Dimension.preferredWrapContent
             }
         )
-        Text(
-            text = activity.activityDesc,
-            maxLines = 2,
-            style = MaterialTheme.typography.subtitle2,
-            modifier = Modifier.constrainAs(activityDesc){
-                linkTo(
-                    start = parent.start,
-                    end = icon.start,
-                    startMargin = 48.dp,
-                    endMargin = 32.dp
-                )
-                top.linkTo(parent.bottom, margin = 6.dp)
-                bottom.linkTo(parent.bottom, margin = 10.dp)
-                width = Dimension.fillToConstraints
-            }
-        )
         //Date
         Text(
             text = when {
-                activity.activityDate != null -> { activity.activityDate.formatToString() }
+                activity.activityDate != null -> { activity.activityDate.toDateString() }
                 else -> Date().formatToString()
             },
             maxLines = 1,
@@ -162,6 +150,12 @@ private fun ActivityListItem(
 
 }
 
-private fun Date.formatToString() : String{
+
+private fun Date.formatToString(): String {
     return SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(this)
+}
+
+fun Long.toDateString(): String {
+    return SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(Date(this))
+
 }

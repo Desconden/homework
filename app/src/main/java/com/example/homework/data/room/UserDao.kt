@@ -13,10 +13,12 @@ import com.example.homework.data.entity.User
 abstract class UserDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    abstract suspend fun insert(entity: User): Long
+    abstract suspend fun insertUser(user: User)
 
-    @Query(value = "SELECT userPassword FROM User WHERE userMail = :mail")
-    abstract suspend fun getPasswordWithEmail(mail: String): User
+    @Delete
+    abstract suspend fun deleteUser(user: User)
 
+    @Query(value = "SELECT * FROM Users WHERE user_Mail LIKE :mail")
+    abstract fun findByMail(mail: String): List<User>
 
 }

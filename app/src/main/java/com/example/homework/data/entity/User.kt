@@ -1,19 +1,20 @@
 package com.example.homework.data.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import android.graphics.Bitmap
+import androidx.room.*
+import com.example.homework.data.room.ActivityDao
+import com.example.homework.data.room.UserDao
 
 @Entity (
-    tableName = "User",
+    tableName = "Users",
     indices = [
-        Index("id", unique = true)
+        Index(value = ["user_id", "user_Mail", "user_Name", "user_Password"],  unique = true)
     ]
         )
     data class User(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
-    @ColumnInfo(name = "userName") val userName: String,
-    @ColumnInfo(name = "userMail") val userMail: String,
-    @ColumnInfo(name = "userPassword") val userPassword: Double,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "user_id") val id: Long = 0,
+    @ColumnInfo(name = "user_Name") val userName: String,
+    @ColumnInfo(name = "user_Mail") val userMail: String,
+    @ColumnInfo(name = "user_Password") val userPassword: Double
     )
+
