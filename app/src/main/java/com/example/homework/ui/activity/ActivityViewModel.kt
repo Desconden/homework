@@ -5,22 +5,17 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.NotificationManagerCompat.from
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.*
 import com.example.homework.data.entity.Activity
 import com.example.homework.data.reprository.ActivityRepository
-import com.example.homework.data.room.ActivityDao
 import com.example.homework.ui.home.HomeActivity.toDateString
-import com.example.homework.util.Graph
+import com.example.homework.Graph
 import com.example.homework.util.NotificationWorker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.sql.Time
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class ActivityViewModel(

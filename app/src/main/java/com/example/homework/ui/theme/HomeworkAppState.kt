@@ -1,4 +1,4 @@
-package com.example.homework
+package com.example.homework.ui.theme
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

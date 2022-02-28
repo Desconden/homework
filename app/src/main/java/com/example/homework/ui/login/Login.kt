@@ -67,7 +67,8 @@ fun Login(
             }
             Spacer(modifier = Modifier.height(5.dp))
             Button(
-                onClick = { navController.navigate("register")},
+                onClick = { navController.navigate("register")
+                    simpleRegisterNotification() },
                 enabled = true,
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.small

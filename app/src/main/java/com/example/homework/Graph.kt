@@ -1,4 +1,4 @@
-package com.example.homework.util
+package com.example.homework
 
 import android.content.Context
 import androidx.room.Room
@@ -19,7 +19,7 @@ object Graph {
 
     fun provide(context: Context) {
         appContext = context
-        db = Room.databaseBuilder(context, App::class.java, "mcData.db")
+        db = Room.databaseBuilder(context, App::class.java, "HWDatabase.db")
             .fallbackToDestructiveMigration() // don't use this in production app
             .build()
     }

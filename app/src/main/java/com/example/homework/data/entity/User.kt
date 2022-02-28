@@ -12,9 +12,9 @@ import com.example.homework.data.room.UserDao
     ]
         )
     data class User(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "user_id") val id: Long = 0,
-    @ColumnInfo(name = "user_Name") val userName: String,
-    @ColumnInfo(name = "user_Mail") val userMail: String,
-    @ColumnInfo(name = "user_Password") val userPassword: Double
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "user_id") var id: Long = 0,
+    @ColumnInfo(name = "user_Name") var userName: String,
+    @ColumnInfo(name = "user_Mail") var userMail: String,
+    @ColumnInfo(name = "user_Password") var userPassword: Double
     )
 

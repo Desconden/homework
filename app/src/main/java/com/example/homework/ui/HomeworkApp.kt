@@ -6,12 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.homework.HomeworkAppState
-import com.example.homework.rememberHomeworkAppState
 import com.example.homework.ui.activity.Activity
 import com.example.homework.ui.home.Home
 import com.example.homework.ui.login.Login
 import com.example.homework.ui.register.Register
+import com.example.homework.ui.theme.HomeworkAppState
+import com.example.homework.ui.theme.rememberHomeworkAppState
 
 @Composable
 fun HomeworkApp(
