@@ -3,7 +3,6 @@ package com.example.homework.ui.activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.graphics.Bitmap
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat.from
@@ -35,6 +34,7 @@ class ActivityViewModel(
     suspend fun noNotSaveActivity(activity: Activity) {
         return activityRepository.addActivity(activity)
     }
+
     init {
         createNotificationChannel(context = Graph.appContext)
         viewModelScope.launch {

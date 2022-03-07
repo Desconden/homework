@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class HomeActivityViewModel(
+    //private val activityID: Long,
     private val activityRepository: ActivityRepository = Graph.activityRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(HomeActivityViewState())
@@ -24,6 +25,11 @@ class HomeActivityViewModel(
                     activity = list
                 )
             }
+        }
+    }
+    fun deleteActivity(activity: Activity){
+        viewModelScope.launch {
+            activityRepository.deleteActivity(activity)
         }
     }
 }

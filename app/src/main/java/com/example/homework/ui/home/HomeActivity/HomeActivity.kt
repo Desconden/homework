@@ -1,19 +1,18 @@
 package com.example.homework.ui.home.HomeActivity
 
-import android.content.Context
-import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.TimePicker
+
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -21,7 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.homework.Graph
 import com.example.homework.data.entity.Activity
+import com.example.homework.util.viewModelProviderFactoryOf
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,6 +31,7 @@ import java.util.*
 fun HomeActivity(
     modifier: Modifier = Modifier
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val viewModel: HomeActivityViewModel = viewModel()
     val viewState by viewModel.state.collectAsState()
 
@@ -61,10 +63,17 @@ private fun ActivityList(
 private fun ActivityListItem(
     activity : Activity,
     onClick : () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ){
-    ConstraintLayout(modifier = modifier
-        .clickable { onClick() }) {
+    //val activityID = activity.activityId
+    val viewModel: HomeActivityViewModel = viewModel(
+        //key = "activity_list_$activityID",
+        //factory = viewModelProviderFactoryOf { HomeActivityViewModel(activityID) }
+    )
+
+    ConstraintLayout(modifier = modifier //editlemeyi buraya ekle üzerine tıklayınca ekleme ekranı gibi bir yere atsın
+        .clickable { onClick(
+        ) }) {
         val(divider, activityTitle, activityCategory, icon, date) = createRefs()
         Divider(
             Modifier.constrainAs(divider){
@@ -131,7 +140,10 @@ private fun ActivityListItem(
 
         //icon
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                deleteActivityControl()
+                viewModel.deleteActivity(activity)
+                      },
             modifier = Modifier
                 .size(50.dp)
                 .padding(6.dp)
@@ -142,14 +154,12 @@ private fun ActivityListItem(
                 }
         ) {
             Icon(
-                imageVector = Icons.Filled.Check,
+                imageVector = Icons.Filled.Delete,
                 contentDescription = stringResource(com.example.homework.R.string.check_mark)
             )
         }
     }
-
 }
-
 
 private fun Date.formatToString(): String {
     return SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(this)
@@ -158,4 +168,17 @@ private fun Date.formatToString(): String {
 fun Long.toDateString(): String {
     return SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(Date(this))
 
+}
+
+fun deleteActivityControl(){
+    val builder = android.app.AlertDialog.Builder(Graph.appContext)
+    builder.setPositiveButton("Yes"){_,_ ->
+        Toast.makeText(Graph.appContext,"Successfully Removed.", Toast.LENGTH_SHORT).show()
+    }
+    builder.setNegativeButton("No"){_,_ ->
+
+    }
+    builder.setTitle("Delete Activity")
+    builder.setMessage("Are you sure you want to delete?")
+    builder.create().show()
 }

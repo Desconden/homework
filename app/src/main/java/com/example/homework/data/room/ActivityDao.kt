@@ -13,6 +13,9 @@ abstract class ActivityDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun updateActivity(activity: Activity)
 
+    @Query("SELECT * FROM ACTIVITY WHERE activity_id = :activityID")
+    abstract fun getActivityByID(activityID: Long): Activity
+
     @Query("SELECT * FROM ACTIVITY LIMIT 15")
     abstract fun getAllActivity(): kotlinx.coroutines.flow.Flow<List<Activity>>
 

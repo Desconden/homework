@@ -6,6 +6,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -53,7 +54,7 @@ fun HomeContent(
                 .systemBarsPadding()
                 .fillMaxWidth()
         ) {
-            val appBarColor = Color.Green
+            val appBarColor = Color.LightGray
 
             HomeAppBar(
                 backgroundColor = appBarColor,
@@ -81,7 +82,7 @@ private fun HomeAppBar(
         backgroundColor = backgroundColor,
         actions = {
             IconButton( onClick = {} ) {
-                Icon(imageVector = Icons.Filled.Search, contentDescription = stringResource(R.string.search))
+                Icon(imageVector = Icons.Filled.LocationOn, contentDescription = stringResource(R.string.search))
             }
             IconButton( onClick = {} ) {
                 Icon(imageVector = Icons.Filled.AccountCircle, contentDescription = stringResource(R.string.account))

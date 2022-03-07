@@ -1,17 +1,18 @@
 package com.example.homework.ui
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.activity
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.*
 import com.example.homework.ui.activity.Activity
 import com.example.homework.ui.home.Home
+import com.example.homework.ui.home.HomeActivity.HomeActivityViewModel
 import com.example.homework.ui.login.Login
 import com.example.homework.ui.register.Register
 import com.example.homework.ui.theme.HomeworkAppState
 import com.example.homework.ui.theme.rememberHomeworkAppState
+import com.example.homework.ui.update.Update
+import com.example.homework.ui.update.UpdateViewModel
+import com.example.homework.util.viewModelProviderFactoryOf
 
 @Composable
 fun HomeworkApp(
@@ -33,6 +34,9 @@ fun HomeworkApp(
         composable(route = "register"){
             Register(navController = appState.navController)
         }
+       // composable(route = "update"){
+       //     Update(onBackPress = appState::navigateBack)
+       // }
     }
 
 
