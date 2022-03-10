@@ -10,8 +10,6 @@ import com.example.homework.ui.home.HomeActivity.HomeActivityViewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class UpdateViewModel(){}
-/*
 class UpdateViewModel(
     private val activityRepository: ActivityRepository = Graph.activityRepository
 ): ViewModel() {
@@ -19,7 +17,7 @@ class UpdateViewModel(
     //private val _state = MutableStateFlow(UpdateViewState())
 
     //val state: MutableStateFlow<UpdateViewState>
-     //   get() = _state
+    //   get() = _state
 
     suspend fun updateActivity(activity: Activity){
         return activityRepository.editActivity(activity)
@@ -27,7 +25,12 @@ class UpdateViewModel(
     suspend fun getActivity(activityID: Long): Activity {
         return activityRepository.getActivityByID(activityID)
     }
+    fun deleteActivity(activityID: Long){
+        viewModelScope.launch {
+            activityRepository.deleteActivity(activityRepository.getActivityByID(activityID))
+        }
+    }
 }
 data class UpdateViewState(
     val activity: Activity
-)*/
+)

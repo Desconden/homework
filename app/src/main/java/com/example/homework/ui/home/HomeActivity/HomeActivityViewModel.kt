@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.homework.data.entity.Activity
 import com.example.homework.data.reprository.ActivityRepository
 import com.example.homework.Graph
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -27,9 +29,14 @@ class HomeActivityViewModel(
             }
         }
     }
-    fun deleteActivity(activity: Activity){
+    fun deleteActivity(activityID: Long){
+        viewModelScope.launch(Dispatchers.IO) {
+            activityRepository.deleteActivity(activityRepository.getActivityByID(activityID))
+        }
+    }
+    fun deleteAllActivity(){
         viewModelScope.launch {
-            activityRepository.deleteActivity(activity)
+            activityRepository.deleteAllActivity()
         }
     }
 }

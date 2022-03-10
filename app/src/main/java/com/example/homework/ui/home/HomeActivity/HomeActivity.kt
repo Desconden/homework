@@ -1,7 +1,6 @@
 package com.example.homework.ui.home.HomeActivity
 
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,31 +20,33 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.homework.Graph
+import androidx.navigation.NavController
 import com.example.homework.data.entity.Activity
-import com.example.homework.util.viewModelProviderFactoryOf
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 @Composable
 fun HomeActivity(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val viewModel: HomeActivityViewModel = viewModel()
     val viewState by viewModel.state.collectAsState()
 
     Column(modifier = modifier){
         ActivityList(
-            list = viewState.activity
+            list = viewState.activity,
+            navController = navController
         )
     }
 }
 
 @Composable
 private fun ActivityList(
-    list: List<Activity>
+    list: List<Activity>,
+    navController: NavController
 ){
     LazyColumn(
         contentPadding = PaddingValues(0.dp),
@@ -54,6 +56,7 @@ private fun ActivityList(
             activity = item,
             onClick = {},
             modifier = Modifier.fillParentMaxWidth(),
+            navController = navController
         )
         }
     }
@@ -63,20 +66,22 @@ private fun ActivityList(
 private fun ActivityListItem(
     activity : Activity,
     onClick : () -> Unit,
-    modifier: Modifier = Modifier
-){
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
     //val activityID = activity.activityId
+    val coroutineScope = rememberCoroutineScope()
     val viewModel: HomeActivityViewModel = viewModel(
         //key = "activity_list_$activityID",
         //factory = viewModelProviderFactoryOf { HomeActivityViewModel(activityID) }
     )
 
     ConstraintLayout(modifier = modifier //editlemeyi buraya ekle üzerine tıklayınca ekleme ekranı gibi bir yere atsın
-        .clickable { onClick(
-        ) }) {
-        val(divider, activityTitle, activityCategory, icon, date) = createRefs()
+        .clickable {
+        }) {
+        val (divider, activityTitle, activityCategory, icon, date) = createRefs()
         Divider(
-            Modifier.constrainAs(divider){
+            Modifier.constrainAs(divider) {
                 top.linkTo(parent.top)
                 centerHorizontallyTo(parent)
                 width = Dimension.fillToConstraints
@@ -87,7 +92,7 @@ private fun ActivityListItem(
             text = activity.activityTitle,
             maxLines = 1,
             style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.constrainAs(activityTitle){
+            modifier = Modifier.constrainAs(activityTitle) {
                 linkTo(
                     start = parent.start,
                     end = icon.start,
@@ -101,10 +106,10 @@ private fun ActivityListItem(
         )
         //category
         Text(
-            text = activity.activityCategory,
+            text = activity.activityDesc,
             maxLines = 1,
             style = MaterialTheme.typography.subtitle2,
-            modifier = Modifier.constrainAs(activityCategory){
+            modifier = Modifier.constrainAs(activityCategory) {
                 linkTo(
                     start = parent.start,
                     end = icon.start,
@@ -119,13 +124,15 @@ private fun ActivityListItem(
         //Date
         Text(
             text = when {
-                activity.activityDate != null -> { activity.activityDate.toDateString() }
+                activity.activityDate != null -> {
+                    activity.activityDate.toDateString()
+                }
                 else -> Date().formatToString()
             },
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.caption,
-            modifier = Modifier.constrainAs(date){
+            modifier = Modifier.constrainAs(date) {
                 linkTo(
                     start = activityCategory.end,
                     end = icon.start,
@@ -141,9 +148,9 @@ private fun ActivityListItem(
         //icon
         IconButton(
             onClick = {
-                deleteActivityControl()
-                viewModel.deleteActivity(activity)
-                      },
+                val Id = activity.activityId.toString()
+                navController.navigate("Update/$Id")
+            },
             modifier = Modifier
                 .size(50.dp)
                 .padding(6.dp)
@@ -154,25 +161,16 @@ private fun ActivityListItem(
                 }
         ) {
             Icon(
-                imageVector = Icons.Filled.Delete,
+                imageVector = Icons.Filled.Edit,
                 contentDescription = stringResource(com.example.homework.R.string.check_mark)
             )
         }
     }
-}
-
-private fun Date.formatToString(): String {
-    return SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(this)
-}
-
-fun Long.toDateString(): String {
-    return SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(Date(this))
-
-}
-
-fun deleteActivityControl(){
+    /*
+fun deleteActivityControl(activityID: Long){
     val builder = android.app.AlertDialog.Builder(Graph.appContext)
     builder.setPositiveButton("Yes"){_,_ ->
+        viewModel.deleteActivity(activityID)
         Toast.makeText(Graph.appContext,"Successfully Removed.", Toast.LENGTH_SHORT).show()
     }
     builder.setNegativeButton("No"){_,_ ->
@@ -182,3 +180,17 @@ fun deleteActivityControl(){
     builder.setMessage("Are you sure you want to delete?")
     builder.create().show()
 }
+*/
+}
+private fun Date.formatToString(): String {
+    return SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(this)
+}
+
+
+
+fun Long.toDateString(): String {
+    return SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(Date(this))
+
+}
+
+

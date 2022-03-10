@@ -1,18 +1,19 @@
 package com.example.homework.ui
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
+import androidx.navigation.activity
 import androidx.navigation.compose.*
+import androidx.navigation.navArgument
 import com.example.homework.ui.activity.Activity
 import com.example.homework.ui.home.Home
-import com.example.homework.ui.home.HomeActivity.HomeActivityViewModel
+import com.example.homework.ui.home.mapview.HomeMap
 import com.example.homework.ui.login.Login
+import com.example.homework.ui.maps.ActivityLocationMap
 import com.example.homework.ui.register.Register
 import com.example.homework.ui.theme.HomeworkAppState
 import com.example.homework.ui.theme.rememberHomeworkAppState
 import com.example.homework.ui.update.Update
-import com.example.homework.ui.update.UpdateViewModel
-import com.example.homework.util.viewModelProviderFactoryOf
 
 @Composable
 fun HomeworkApp(
@@ -29,14 +30,22 @@ fun HomeworkApp(
             Home(navController = appState.navController)
         }
         composable(route = "activity"){
-            Activity(onBackPress = appState::navigateBack)
+            Activity(onBackPress = appState::navigateBack, navController = appState.navController)
         }
         composable(route = "register"){
             Register(navController = appState.navController)
         }
-       // composable(route = "update"){
-       //     Update(onBackPress = appState::navigateBack)
-       // }
+        composable("map"){
+            ActivityLocationMap(navController = appState.navController)
+        }
+        composable(route = "update/{Id}",
+        ){
+            val activityId = it.arguments?.getString("Id")
+            Update(onBackPress = appState::navigateBack, navController = appState.navController, activityId = activityId)
+        }
+        composable("HomeMap"){
+            HomeMap(onBackPress = appState::navigateBack)
+        }
     }
 
 

@@ -60,7 +60,8 @@ fun HomeContent(
                 backgroundColor = appBarColor,
             )
             HomeActivity(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                navController = navController
             )
         }
     }

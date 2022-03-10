@@ -7,7 +7,7 @@ import com.example.homework.data.entity.User
 
 @Database(
     entities = [User::class, Activity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class App : RoomDatabase() {
