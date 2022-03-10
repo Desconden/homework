@@ -2,7 +2,9 @@ package com.example.homework.ui.update
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.widget.DatePicker
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -37,6 +40,7 @@ fun Update(
     navController: NavController,
     activityId: String?
 ) {
+    val localContext = LocalContext.current as ComponentActivity
     val activityID = activityId?.toLong()
     val coroutineScope = rememberCoroutineScope()
     val viewModel: UpdateViewModel = viewModel()
@@ -46,7 +50,7 @@ fun Update(
 
     val timePicked = remember { mutableStateOf("") }
     val timePickerDialog = TimePickerDialog(
-        Graph.appContext,
+        localContext,
         {_, hour : Int, minute: Int ->
             timePicked.value = "$hour:$minute"
         }, hour, minute, false
@@ -63,7 +67,7 @@ fun Update(
 
     val date = remember { mutableStateOf("") }
     val datePickerDialog = DatePickerDialog(
-        Graph.appContext,
+        localContext,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
             date.value = "$dayOfMonth/$month/$year"
         }, year, month, day
