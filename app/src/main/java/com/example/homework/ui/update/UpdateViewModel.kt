@@ -25,9 +25,10 @@ class UpdateViewModel(
     suspend fun getActivity(activityID: Long): Activity {
         return activityRepository.getActivityByID(activityID)
     }
-    fun deleteActivity(activityID: Long){
+    suspend fun deleteActivity(activityID: Long){
         viewModelScope.launch {
-            activityRepository.deleteActivity(activityRepository.getActivityByID(activityID))
+            val act = getActivity(activityID)
+            activityRepository.deleteActivity(act)
         }
     }
 }

@@ -26,7 +26,6 @@ import androidx.navigation.NavController
 import com.example.homework.Graph
 import com.example.homework.R
 import com.example.homework.data.entity.Activity
-import com.example.homework.data.entity.Location
 import com.google.accompanist.insets.systemBarsPadding
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
@@ -47,7 +46,7 @@ fun Update(
 
     val timePicked = remember { mutableStateOf("") }
     val timePickerDialog = TimePickerDialog(
-        this,
+        Graph.appContext,
         {_, hour : Int, minute: Int ->
             timePicked.value = "$hour:$minute"
         }, hour, minute, false
@@ -64,7 +63,7 @@ fun Update(
 
     val date = remember { mutableStateOf("") }
     val datePickerDialog = DatePickerDialog(
-        this,
+        Graph.appContext,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
             date.value = "$dayOfMonth/$month/$year"
         }, year, month, day
@@ -220,8 +219,8 @@ fun Update(
                             text = "Lat: ${latLng.latitude}, \nLng: ${latLng.longitude}"
                         )
                     }
-                    val lat = latLng?.latitude
-                    val lon = latLng?.longitude
+                    val lat = latLng?.latitude.toString()
+                    val lon = latLng?.longitude.toString()
                     //time picker
                     Spacer(modifier = Modifier.height(10.dp))
                     Row {
@@ -237,7 +236,8 @@ fun Update(
                             activityTitle = name.value,
                             activityDate = Date().time,
                             activityTime = time.value,
-                            activityLocation = Location(lon, lat)
+                            activitylatitude = lat,
+                            activitylongitude = lon
                         )
                         Button(
                             onClick = {

@@ -13,7 +13,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.homework.data.entity.Location
 import com.google.accompanist.insets.systemBarsPadding
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
@@ -109,73 +108,73 @@ fun Activity(
                     ) {
                         Text(text = "Activity Location")
                     }
-                }
-                else {
+                } else {
                     Text(
                         text = "Lat: ${latLng.latitude}, \nLng: ${latLng.longitude}"
                     )
-                }
-                val lat = latLng?.latitude
-                val lon = latLng?.longitude
-
-                //time picker
-                Spacer(modifier = Modifier.height(10.dp))
-                Row {
-                    /*fun onCreate(savedInstanceState: Bundle?) {
+                    val lat = latLng.latitude.toString()
+                    val lon = latLng.longitude.toString()
+                    //time picker
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row {
+                        /*fun onCreate(savedInstanceState: Bundle?) {
                         onCreate(savedInstanceState)
                         OnClickTime()
                     }*/
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Button(
-                        onClick = {
-                            coroutineScope.launch {
-                                viewModel.saveActivity(
-                                    com.example.homework.data.entity.Activity(
-                                        activityTitle = name.value,
-                                        activityDesc = description.value,
-                                        activityCategory = type.value,
-                                        activityDate = Date().time,
-                                        activityTime = time.value,
-                                        activityLocation = Location(lon, lat)
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                    viewModel.saveActivity(
+                                        com.example.homework.data.entity.Activity(
+                                            activityTitle = name.value,
+                                            activityDesc = description.value,
+                                            activityCategory = type.value,
+                                            activityDate = Date().time,
+                                            activityTime = time.value,
+                                            activitylatitude = lat,
+                                            activitylongitude = lon
 
+                                        )
                                     )
-                                )
-                            }
-                            onBackPress()
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth(fraction = 0.5f)
-                            .size(55.dp)
-                    ) {
-                        Text("Add Activity")
-                    }
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Button(
-                        onClick = {
-                            coroutineScope.launch {
-                                viewModel.noNotSaveActivity(
-                                    com.example.homework.data.entity.Activity(
-                                        activityTitle = name.value,
-                                        activityDesc = description.value,
-                                        activityCategory = type.value,
-                                        activityDate = Date().time,
-                                        activityTime = time.value,
-                                        activityLocation = Location(lon, lat)
+                                }
+                                onBackPress()
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth(fraction = 0.5f)
+                                .size(55.dp)
+                        ) {
+                            Text("Add Activity")
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                    viewModel.noNotSaveActivity(
+                                        com.example.homework.data.entity.Activity(
+                                            activityTitle = name.value,
+                                            activityDesc = description.value,
+                                            activityCategory = type.value,
+                                            activityDate = Date().time,
+                                            activityTime = time.value,
+                                            activitylatitude = lat,
+                                            activitylongitude = lon
+                                        )
                                     )
-                                )
-                            }
-                            onBackPress()
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .size(55.dp)
-                    ) {
-                        Text("No Notification")
+                                }
+                                onBackPress()
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .size(55.dp)
+                        ) {
+                            Text("No Notification")
+                        }
                     }
                 }
             }
-        }
 
+        }
     }
 }
 

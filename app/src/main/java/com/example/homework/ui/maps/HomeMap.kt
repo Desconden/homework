@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.homework.data.entity.Activity
 import com.example.homework.util.rememberMapViewWithLifecycle
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -30,7 +31,7 @@ fun HomeMap(
         val coroutineScope = rememberCoroutineScope()
         val viewModel: HomeMapViewModel = viewModel()
         val viewState by viewModel.state.collectAsState()
-
+        val list = viewState.activity
         Column(modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
@@ -50,15 +51,25 @@ fun HomeMap(
                         .title("Welcome to Oulu")
                         .position(location)
                     map.addMarker(markerOptions)
-
-                    setMapLongClick(map = map)
+                    for (activity in list) {
+                        val lon = activity.activitylongitude.toDouble()
+                        val lan = activity.activitylatitude.toDouble()
+                        val loc = LatLng(lon, lan)
+                        //if(lon-0.5 < latlng.longitude && latlng.longitude < lon+0.5) {
+                        val markers = MarkerOptions()
+                            .title(activity.activityTitle)
+                            .position(loc)
+                        map.addMarker(markers)
+                    }
+                    setMapLongClick(map = map, list = viewState.activity)
                 }
             }
         }
     }
 
     private fun setMapLongClick(
-        map: GoogleMap
+        map: GoogleMap,
+        list: List<Activity>
     ) {
         map.setOnMapLongClickListener { latlng ->
             val snippet = String.format(
@@ -69,9 +80,10 @@ fun HomeMap(
             )
 
             map.addMarker(
-                MarkerOptions().position(latlng).title("Activity location").snippet(snippet)
+                MarkerOptions().position(latlng).title("View Location").snippet(snippet)
             ).apply {
 
             }
         }
     }
+

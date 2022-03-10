@@ -34,11 +34,6 @@ class HomeActivityViewModel(
             activityRepository.deleteActivity(activityRepository.getActivityByID(activityID))
         }
     }
-    fun deleteAllActivity(){
-        viewModelScope.launch {
-            activityRepository.deleteAllActivity()
-        }
-    }
 }
 
 data class HomeActivityViewState(

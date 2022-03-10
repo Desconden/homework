@@ -14,11 +14,16 @@ data class Activity(
         @ColumnInfo(name = "activity_Time") var activityTime: String,
         //@ColumnInfo(name = "activity_TDate") var activityTDate: String,
         @ColumnInfo(name = "activity_Desc") var activityDesc: String,
-        @Embedded
+        @ColumnInfo(name = "activity_latitude") var activitylatitude: String,
+        @ColumnInfo(name = "activitiy_longitude") var activitylongitude: String
+)
+       /* @Embedded
         var activityLocation: Location
+
     )
 
-class Location(longitude: Double?, latitude: Double?) {
-        var longitude: Double? = 0.0
-                var latitude: Double? = 0.0
+class Location(longitude: String, latitude: String) {
+        var longitude: String = ""
+                var latitude: String = ""
 }
+*/

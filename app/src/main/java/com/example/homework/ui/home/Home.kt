@@ -1,16 +1,12 @@
 package com.example.homework.ui.home
 
-import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -58,6 +54,7 @@ fun HomeContent(
 
             HomeAppBar(
                 backgroundColor = appBarColor,
+                navController = navController
             )
             HomeActivity(
                 modifier = Modifier.fillMaxSize(),
@@ -68,7 +65,8 @@ fun HomeContent(
 }
 @Composable
 private fun HomeAppBar(
-    backgroundColor: Color
+    backgroundColor: Color,
+    navController: NavController
 ) {
     TopAppBar(
         title = {
@@ -82,7 +80,9 @@ private fun HomeAppBar(
         },
         backgroundColor = backgroundColor,
         actions = {
-            IconButton( onClick = {} ) {
+            IconButton( onClick = {
+                navController.navigate("HomeMap")
+            } ) {
                 Icon(imageVector = Icons.Filled.LocationOn, contentDescription = stringResource(R.string.search))
             }
             IconButton( onClick = {} ) {
