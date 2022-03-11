@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
@@ -259,6 +260,8 @@ fun Update(
                                         UpdatedActivity
                                     )
                                 }
+                                Toast.makeText(localContext, "$title has been updated to " +
+                                        "${name.value}", Toast.LENGTH_LONG).show()
                                 onBackPress()
                             },
                             modifier = Modifier

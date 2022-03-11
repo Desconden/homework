@@ -7,18 +7,25 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.example.homework.data.entity.Activity
 import com.example.homework.data.entity.User
 
 @Dao
 abstract class UserDao {
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertUser(user: User)
 
     @Delete
     abstract suspend fun deleteUser(user: User)
 
-    @Query(value = "SELECT * FROM Users WHERE user_Mail LIKE :mail")
-    abstract fun findByMail(mail: String): List<User>
+    @Update
+    abstract suspend fun updateUser(user: User)
+
+    @Query ("SELECT * FROM Users WHERE user_id = :userID")
+    abstract suspend fun getUserById(userID: Long): User
+
+    @Query(value = "SELECT * FROM Users WHERE user_Mail = :mail")
+    abstract suspend fun findByMail(mail: String): User?
 
 }

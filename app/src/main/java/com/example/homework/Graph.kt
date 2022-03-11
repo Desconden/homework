@@ -3,6 +3,7 @@ package com.example.homework
 import android.content.Context
 import androidx.room.Room
 import com.example.homework.data.reprository.ActivityRepository
+import com.example.homework.data.reprository.UserRepository
 import com.example.homework.data.room.App
 
 object Graph {
@@ -14,6 +15,11 @@ object Graph {
     val activityRepository by lazy {
         ActivityRepository(
             activityDao = db.activityDao()
+        )
+    }
+    val userRepository by lazy {
+        UserRepository(
+            userDao = db.userDao()
         )
     }
 

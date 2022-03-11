@@ -12,7 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.homework.Graph
 import com.example.homework.data.entity.Activity
 import com.example.homework.util.rememberMapViewWithLifecycle
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -67,9 +70,8 @@ fun HomeMap(
                 latlng.latitude,
                 latlng.longitude
             )
-
             map.addMarker(
-                MarkerOptions().position(latlng).title("View Location").snippet(snippet)
+                MarkerOptions().position(latlng).title("Device Location").snippet(snippet)
             ).apply {
                 for (activity in list) {
                     val lon = activity.activitylongitude.toDouble()
@@ -77,6 +79,11 @@ fun HomeMap(
                     val loc = LatLng(lan, lon)
                     if (lon - 0.03 < latlng.longitude && latlng.longitude < lon + 0.03
                         && lan - 0.03 < latlng.latitude && latlng.latitude < lan + 0.03 ) {
+                            if(lon - 0.01 < latlng.longitude && latlng.longitude < lon + 0.01
+                                && lan - 0.01 < latlng.latitude && latlng.latitude < lan + 0.01) {
+                                createSimpleNotification(activity.activityTitle,
+                                    activity.activityDesc,activity.activityTime, activity.activityRDate)
+                            }
                         val markers = MarkerOptions()
                             .title(activity.activityTitle)
                             .position(loc)
@@ -86,4 +93,16 @@ fun HomeMap(
             }
         }
     }
-
+private fun createSimpleNotification(title: String, desc: String, time: String,date: String){
+    val notificationId = 8
+    val builder = NotificationCompat.Builder(Graph.appContext, "CHANNEL_ID")
+        .setSmallIcon(com.example.homework.R.drawable.ic_launcher_background)
+        .setContentTitle("You are close to The $title!")
+        .setContentText("Time of the Reminder:$time")
+        .setStyle(NotificationCompat.BigTextStyle()
+            .bigText("Date of the Reminder:$date, $desc"))
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+    with(NotificationManagerCompat.from(Graph.appContext)) {
+        notify(notificationId, builder.build())
+    }
+}

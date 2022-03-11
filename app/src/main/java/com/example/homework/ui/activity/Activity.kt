@@ -3,6 +3,7 @@ package com.example.homework.ui.activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -202,6 +203,7 @@ fun Activity(
                                         )
                                     )
                                 }
+                                Toast.makeText(localContext, "${name.value} has been added to Reminders", Toast.LENGTH_LONG).show()
                                 onBackPress()
                             },
                             modifier = Modifier

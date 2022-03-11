@@ -1,31 +1,38 @@
 package com.example.homework.ui.login
 
-import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.homework.data.entity.User
 import com.google.accompanist.insets.systemBarsPadding
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 @Composable
 fun Login(
-    navController: NavController
+    navController: NavController,
+    viewModel: LoginViewModel = viewModel()
 ){
+    val localContext = LocalContext.current as ComponentActivity
+    val coroutineScope = rememberCoroutineScope()
+    var LoginUser: User? = null
     Surface(modifier = Modifier.fillMaxSize()) {
         val username = rememberSaveable { mutableStateOf("") }
         val password = rememberSaveable { mutableStateOf("") }
-        val user: String = "Arda"
-        val pass: String = "Pass"
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
@@ -56,8 +63,14 @@ fun Login(
             Spacer(modifier = Modifier.height(10.dp))
             Button(
                 onClick = {
-                    //if (username.toString() == user && password.toString() == pass)
-                        navController.navigate("home")
+                    coroutineScope.launch {
+                        LoginUser = viewModel.findUserByMail(username.value)
+                        if (LoginUser!!.userPassword == password.value.toLong()){
+                            Toast.makeText(localContext, "Login successful. Welcome " +
+                                    LoginUser!!.userName, Toast.LENGTH_LONG).show()
+                            navController.navigate("home")
+                        }
+                    }
                 },
                 enabled = true,
                 modifier = Modifier.fillMaxWidth(),
