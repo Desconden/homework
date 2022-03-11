@@ -20,6 +20,6 @@ abstract class ActivityDao {
     abstract suspend fun deleteAllActivity()
 
     @Query("SELECT * FROM ACTIVITY LIMIT 15")
-    abstract suspend fun getAllActivity(): kotlinx.coroutines.flow.Flow<List<Activity>>
+    abstract fun getAllActivity(): kotlinx.coroutines.flow.Flow<List<Activity>>
 
 }

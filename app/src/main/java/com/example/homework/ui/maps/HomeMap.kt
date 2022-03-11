@@ -31,7 +31,6 @@ fun HomeMap(
         val coroutineScope = rememberCoroutineScope()
         val viewModel: HomeMapViewModel = viewModel()
         val viewState by viewModel.state.collectAsState()
-        val list = viewState.activity
         Column(modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
@@ -51,16 +50,6 @@ fun HomeMap(
                         .title("Welcome to Oulu")
                         .position(location)
                     map.addMarker(markerOptions)
-                    for (activity in list) {
-                        val lon = activity.activitylongitude.toDouble()
-                        val lan = activity.activitylatitude.toDouble()
-                        val loc = LatLng(lon, lan)
-                        //if(lon-0.5 < latlng.longitude && latlng.longitude < lon+0.5) {
-                        val markers = MarkerOptions()
-                            .title(activity.activityTitle)
-                            .position(loc)
-                        map.addMarker(markers)
-                    }
                     setMapLongClick(map = map, list = viewState.activity)
                 }
             }
@@ -82,7 +71,18 @@ fun HomeMap(
             map.addMarker(
                 MarkerOptions().position(latlng).title("View Location").snippet(snippet)
             ).apply {
-
+                for (activity in list) {
+                    val lon = activity.activitylongitude.toDouble()
+                    val lan = activity.activitylatitude.toDouble()
+                    val loc = LatLng(lan, lon)
+                    if (lon - 0.03 < latlng.longitude && latlng.longitude < lon + 0.03
+                        && lan - 0.03 < latlng.latitude && latlng.latitude < lan + 0.03 ) {
+                        val markers = MarkerOptions()
+                            .title(activity.activityTitle)
+                            .position(loc)
+                        map.addMarker(markers)
+                    }
+                }
             }
         }
     }

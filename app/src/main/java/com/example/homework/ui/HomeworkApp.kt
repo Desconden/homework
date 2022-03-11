@@ -38,10 +38,14 @@ fun HomeworkApp(
         composable("map"){
             ActivityLocationMap(navController = appState.navController)
         }
-        composable(route = "update/{Id}",
+        composable(route = "update/{Id}/{title}/{category}/{desc}",
         ){
             val activityId = it.arguments?.getString("Id")
-            Update(onBackPress = appState::navigateBack, navController = appState.navController, activityId = activityId)
+            val title = it.arguments?.getString("title")
+            val cat = it.arguments?.getString("category")
+            val desc = it.arguments?.getString("desc")
+            Update(onBackPress = appState::navigateBack, navController = appState.navController,
+                activityId = activityId, title = title, activityCat = cat, activityDesc = desc)
         }
         composable("HomeMap"){
             HomeMap(onBackPress = appState::navigateBack)

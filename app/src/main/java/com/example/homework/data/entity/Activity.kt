@@ -12,7 +12,7 @@ data class Activity(
         @ColumnInfo(name = "activity_Category") var activityCategory: String,
         @ColumnInfo(name = "activity_Date") var activityDate: Long,
         @ColumnInfo(name = "activity_Time") var activityTime: String,
-        //@ColumnInfo(name = "activity_TDate") var activityTDate: String,
+        @ColumnInfo(name = "activity_RDate") var activityRDate: String,
         @ColumnInfo(name = "activity_Desc") var activityDesc: String,
         @ColumnInfo(name = "activity_latitude") var activitylatitude: String,
         @ColumnInfo(name = "activitiy_longitude") var activitylongitude: String

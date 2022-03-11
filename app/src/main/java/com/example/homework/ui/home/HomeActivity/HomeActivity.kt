@@ -79,7 +79,7 @@ private fun ActivityListItem(
     ConstraintLayout(modifier = modifier //editlemeyi buraya ekle üzerine tıklayınca ekleme ekranı gibi bir yere atsın
         .clickable {
         }) {
-        val (divider, activityTitle, activityCategory, icon, date) = createRefs()
+        val (divider, activityTitle, activityCategory, icon, date, time) = createRefs()
         Divider(
             Modifier.constrainAs(divider) {
                 top.linkTo(parent.top)
@@ -95,9 +95,7 @@ private fun ActivityListItem(
             modifier = Modifier.constrainAs(activityTitle) {
                 linkTo(
                     start = parent.start,
-                    end = icon.start,
-                    startMargin = 48.dp,
-                    endMargin = 32.dp,
+                    end = activityCategory.start,
                     bias = 0f
                 )
                 top.linkTo(parent.top, margin = 10.dp)
@@ -106,35 +104,49 @@ private fun ActivityListItem(
         )
         //category
         Text(
-            text = activity.activityDesc,
+            text = activity.activityCategory,
             maxLines = 1,
             style = MaterialTheme.typography.subtitle2,
             modifier = Modifier.constrainAs(activityCategory) {
                 linkTo(
-                    start = parent.start,
+                    start = activityTitle.end,
                     end = icon.start,
-                    startMargin = 24.dp,
-                    endMargin = 8.dp
+                    startMargin = 16.dp,
+                    endMargin = 12.dp,
+                    bias = 0f
                 )
-                top.linkTo(activityTitle.bottom, margin = 6.dp)
-                bottom.linkTo(parent.bottom, margin = 10.dp)
+                top.linkTo(parent.top, margin = 10.dp)
+                width = Dimension.preferredWrapContent
+            }
+        )
+        //time
+        Text(
+            text = activity.activityTime,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier.constrainAs(time) {
+                linkTo(
+                    start = parent.start,
+                    end = date.start,
+                    startMargin = 50.dp,
+                    endMargin = 0.dp
+                )
+                top.linkTo(activityCategory.bottom, margin = 6.dp)
+                bottom.linkTo(parent.bottom, margin = 6.dp)
                 width = Dimension.preferredWrapContent
             }
         )
         //Date
         Text(
-            text = when {
-                activity.activityDate != null -> {
-                    activity.activityDate.toDateString()
-                }
-                else -> Date().formatToString()
-            },
+            text = activity.activityRDate
+            ,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.caption,
             modifier = Modifier.constrainAs(date) {
                 linkTo(
-                    start = activityCategory.end,
+                    start = time.end,
                     end = icon.start,
                     startMargin = 8.dp,
                     endMargin = 16.dp
@@ -149,7 +161,7 @@ private fun ActivityListItem(
         IconButton(
             onClick = {
                 val Id = activity.activityId.toString()
-                navController.navigate("Update/$Id")
+                navController.navigate("Update/$Id/${activity.activityTitle}/${activity.activityCategory}/${activity.activityDesc}")
             },
             modifier = Modifier
                 .size(50.dp)

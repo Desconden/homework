@@ -1,5 +1,9 @@
 package com.example.homework.ui.activity
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.widget.DatePicker
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -9,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,12 +29,41 @@ fun Activity(
     viewModel: ActivityViewModel = viewModel(),
     navController: NavController
 ) {
+    var flag1 = 1
+    var flag2 = 1
+    val localContext = LocalContext.current as ComponentActivity
     val coroutineScope = rememberCoroutineScope()
     val name = rememberSaveable { mutableStateOf("") }
     val type = rememberSaveable { mutableStateOf("") }
     val description = rememberSaveable { mutableStateOf("") }
-    val time = rememberSaveable { mutableStateOf("") }
+    val calendar = Calendar.getInstance()
+    val hour = calendar[Calendar.HOUR_OF_DAY]
+    val minute = calendar[Calendar.MINUTE]
 
+    val timePicked = rememberSaveable { mutableStateOf("") }
+    val timePickerDialog = TimePickerDialog(
+        localContext,
+        {_, hour : Int, minute: Int ->
+            timePicked.value = "$hour:$minute"
+        }, hour, minute, false
+    )
+    val year: Int
+    val month: Int
+    val day: Int
+
+    val cal = Calendar.getInstance()
+    year = cal.get(Calendar.YEAR)
+    month = cal.get(Calendar.MONTH)
+    day = cal.get(Calendar.DAY_OF_MONTH)
+    cal.time = Date()
+
+    val date = rememberSaveable { mutableStateOf("") }
+    val datePickerDialog = DatePickerDialog(
+        localContext,
+        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+            date.value = "$dayOfMonth/$month/$year"
+        }, year, month, day
+    )
     val latLng = navController
         .currentBackStackEntry
         ?.savedStateHandle
@@ -77,16 +111,46 @@ fun Activity(
                         keyboardType = KeyboardType.Text
                     )
                 )
-                OutlinedTextField(
-                    value = time.value,
-                    onValueChange = { data -> time.value = data },
-                    label = { Text("Time") },
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text
-                    )
-                )
+                //time picker
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    if(flag1 == 1) {
+                        Button(
+                            modifier = Modifier.fillMaxWidth(0.5f),
+                            onClick = {
+                                flag1 = 0
+                                timePickerDialog.show()
+                            }) {
+                            Text(text = "Open Time Picker")
+                        }
+                    }
+                    else {
+                        Text(
+                            text = timePicked.value,
+                            modifier = Modifier.fillMaxWidth(0.5f)
+                        )
+                    }
+
+                    if(flag2 == 1) {
+                        // date picker
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                flag2 = 0
+                                datePickerDialog.show()
+                            }) {
+                            Text(text = "Open Date Picker")
+                        }
+                    }
+                    else {
+                        Text(
+                            text = date.value,
+                            modifier = Modifier.fillMaxWidth(0.5f)
+                        )
+                    }
+                }
                 Spacer(modifier = Modifier.height(10.dp))
                 OutlinedTextField(
                     value = description.value,
@@ -131,10 +195,10 @@ fun Activity(
                                             activityDesc = description.value,
                                             activityCategory = type.value,
                                             activityDate = Date().time,
-                                            activityTime = time.value,
+                                            activityTime = timePicked.value,
                                             activitylatitude = lat,
-                                            activitylongitude = lon
-
+                                            activitylongitude = lon,
+                                            activityRDate = date.value
                                         )
                                     )
                                 }
@@ -156,9 +220,10 @@ fun Activity(
                                             activityDesc = description.value,
                                             activityCategory = type.value,
                                             activityDate = Date().time,
-                                            activityTime = time.value,
+                                            activityTime = timePicked.value,
                                             activitylatitude = lat,
-                                            activitylongitude = lon
+                                            activitylongitude = lon,
+                                            activityRDate = date.value
                                         )
                                     )
                                 }

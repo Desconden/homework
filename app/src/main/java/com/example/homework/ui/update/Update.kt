@@ -38,8 +38,13 @@ import java.util.*
 fun Update(
     onBackPress: () -> Unit,
     navController: NavController,
-    activityId: String?
+    activityId: String?,
+    title: String?,
+    activityCat: String?,
+    activityDesc: String?
 ) {
+    var flag1 = 1
+    var flag2 = 1
     val localContext = LocalContext.current as ComponentActivity
     val activityID = activityId?.toLong()
     val coroutineScope = rememberCoroutineScope()
@@ -47,7 +52,6 @@ fun Update(
     val calendar = Calendar.getInstance()
     val hour = calendar[Calendar.HOUR_OF_DAY]
     val minute = calendar[Calendar.MINUTE]
-
     val timePicked = remember { mutableStateOf("") }
     val timePickerDialog = TimePickerDialog(
         localContext,
@@ -72,7 +76,6 @@ fun Update(
             date.value = "$dayOfMonth/$month/$year"
         }, year, month, day
     )
-
     /*coroutineScope.launch {
         val CurrentActivity = viewModel.getActivity(activityID)
     }*/
@@ -106,11 +109,9 @@ fun Update(
             }
         }
     )
-    val name = rememberSaveable { mutableStateOf("") }
-    val type = rememberSaveable { mutableStateOf("") }
-    val description = rememberSaveable { mutableStateOf("") }
-    val time = rememberSaveable { mutableStateOf("") }
-    val activitydate = rememberSaveable { mutableStateOf("") }
+    var name = rememberSaveable { mutableStateOf("$title") }
+    var type = rememberSaveable { mutableStateOf("$activityCat") }
+    var description = rememberSaveable { mutableStateOf("$activityDesc") }
 
     Surface {
         Column(
@@ -138,7 +139,7 @@ fun Update(
                         contentDescription = stringResource(R.string.search)
                     )
                 }
-                Text(activityID.toString())
+                Text(title.toString())
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -165,38 +166,45 @@ fun Update(
                         keyboardType = KeyboardType.Text
                     )
                 )
-                Spacer(modifier = Modifier.height(10.dp))
-                OutlinedTextField(
-                    value = time.value,
-                    onValueChange = { data -> time.value = data },
-                    label = { Text("Time") },
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text
-                    )
-                )
                 //time picker
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth()
-                ){
-                    Button(
-                        modifier = Modifier.fillMaxWidth(0.5f),
-                        onClick = {
-                        timePickerDialog.show()
-                    }) {
-                        Text(text = "Open Time Picker")
+                ) {
+                    if(flag1 == 1) {
+                        Button(
+                            modifier = Modifier.fillMaxWidth(0.5f),
+                            onClick = {
+                                flag1 = 0
+                                timePickerDialog.show()
+                            }) {
+                            Text(text = "Open Time Picker")
+                        }
                     }
-                }
+                    else {
+                        Text(
+                            text = timePicked.value,
+                            modifier = Modifier.fillMaxWidth(0.5f)
+                        )
+                    }
 
-                // date picker
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                    datePickerDialog.show()
-                }) {
-                    Text(text = "Open Date Picker")
+                    if(flag2 == 1) {
+                        // date picker
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                flag2 = 0
+                                datePickerDialog.show()
+                            }) {
+                            Text(text = "Open Date Picker")
+                        }
+                    }
+                    else {
+                        Text(
+                            text = date.value,
+                            modifier = Modifier.fillMaxWidth(0.5f)
+                        )
+                    }
                 }
                     Spacer(modifier = Modifier.height(10.dp))
                     OutlinedTextField(
@@ -239,9 +247,10 @@ fun Update(
                             activityDesc = description.value,
                             activityTitle = name.value,
                             activityDate = Date().time,
-                            activityTime = time.value,
+                            activityTime = timePicked.value,
                             activitylatitude = lat,
-                            activitylongitude = lon
+                            activitylongitude = lon,
+                            activityRDate = date.value,
                         )
                         Button(
                             onClick = {
@@ -263,4 +272,6 @@ fun Update(
             }
         }
     }
+
+
 
