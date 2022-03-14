@@ -20,6 +20,7 @@ import com.example.homework.data.entity.Activity
 import com.example.homework.util.rememberMapViewWithLifecycle
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.ktx.awaitMap
@@ -34,6 +35,7 @@ fun HomeMap(
         val coroutineScope = rememberCoroutineScope()
         val viewModel: HomeMapViewModel = viewModel()
         val viewState by viewModel.state.collectAsState()
+        val currentLocation = Graph.location
         Column(modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
@@ -43,12 +45,37 @@ fun HomeMap(
                 coroutineScope.launch {
                     val map = mapView.awaitMap()
                     map.uiSettings.isZoomControlsEnabled = true
+                    map.addMarker(
+                        MarkerOptions().
+                        position(currentLocation)
+                            .title("Device Location")
+                            .icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)))
+
                     val location = LatLng(65.06, 25.47)
 
                     map.moveCamera(
                         CameraUpdateFactory.newLatLngZoom(location, 10f)
                     )
+                    var list = viewState.activity
+                    for (activity in list) {
+                        val lon = activity.activitylongitude.toDouble()
+                        val lan = activity.activitylatitude.toDouble()
+                        val loc = LatLng(lan, lon)
+                        if(lon - 0.01 < currentLocation.longitude && currentLocation.longitude < lon + 0.01
+                                && lan - 0.01 < currentLocation.latitude && currentLocation.latitude < lan + 0.01) {
+                            createSimpleNotification(
+                                activity.activityTitle,
+                                activity.activityDesc, activity.activityTime, activity.activityRDate
+                            )
 
+                            val markers = MarkerOptions()
+                                .title(activity.activityTitle)
+                                .position(loc)
+                            map.addMarker(markers)
+                        }
+
+                    }
                     val markerOptions = MarkerOptions()
                         .title("Welcome to Oulu")
                         .position(location)
@@ -71,7 +98,8 @@ fun HomeMap(
                 latlng.longitude
             )
             map.addMarker(
-                MarkerOptions().position(latlng).title("Device Location").snippet(snippet)
+                MarkerOptions().position(latlng).title("Virtual Location").snippet(snippet)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
             ).apply {
                 for (activity in list) {
                     val lon = activity.activitylongitude.toDouble()

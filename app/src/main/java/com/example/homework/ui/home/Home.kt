@@ -24,6 +24,7 @@ import com.google.accompanist.insets.systemBarsPadding
 fun Home(
     viewModel: HomeViewModel = viewModel(),
     navController: NavController
+
 ){
 HomeContent(
     navController = navController
